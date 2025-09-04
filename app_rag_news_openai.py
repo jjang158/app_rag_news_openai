@@ -8,7 +8,8 @@ from langchain_community.retrievers import BM25Retriever
 from langchain_community.vectorstores import FAISS
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain.retrievers import EnsembleRetriever
-from langchain_openai import ChatOpenAI  # ✅ OpenAI LLM
+from langchain_openai import ChatOpenAI
+import subprocess
 
 # 2) DB 경로/테이블 설정 ----------------------------------------------------------
 DB_PATH = "company_news.db"
@@ -17,7 +18,7 @@ TABLE   = "news"
 # 3) DB에서 문서 로드 함수 --------------------------------------------------------
 def load_documents_from_sqlite(db_path: str):
     if not os.path.exists(db_path):
-        raise FileNotFoundError(f"{db_path} 파일이 없습니다. 먼저 데이터 생성 스크립트를 실행하세요.")
+        subprocess.run(["python", "make_sqlite_data.py"])
 
     conn = sqlite3.connect(db_path)
     cur  = conn.cursor()
